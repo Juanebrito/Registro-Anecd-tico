@@ -1,0 +1,262 @@
+
+       
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro Anecdótico de Estudiante</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 0;
+        }
+
+        .registro-anecdotico {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+
+        textarea {
+            resize: vertical;
+        }
+
+        .form-group.inline {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .form-group.inline > div {
+            flex: 1;
+            margin-right: 10px;
+        }
+
+        .form-group.inline > div:last-child {
+            margin-right: 0;
+        }
+
+        button {
+            display: inline-block;
+            width: 48%;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .new-record-btn {
+            background-color: #f44336;
+        }
+
+        button.new-record-btn:hover {
+            background-color: #d32f2f;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="registro-anecdotico">
+        <h2>Registro Anecdótico de Estudiante</h2>
+
+        <div class="form-group">
+            <label for="nombre-centro">Nombre del Centro Educativo:</label>
+            <input type="text" id="nombre-centro" name="nombre-centro">
+        </div>
+
+        <div class="form-group">
+            <label for="docente">Nombre del Docente:</label>
+            <input type="text" id="docente" name="docente">
+        </div>
+
+        <div class="form-group">
+            <label for="asignatura">Asignatura que imparte:</label>
+            <input type="text" id="asignatura" name="asignatura">
+        </div>
+
+        <div class="form-group">
+            <label for="fecha">Fecha:</label>
+            <input type="date" id="fecha" name="fecha">
+        </div>
+
+        <div class="form-group inline">
+            <div>
+                <label for="curso">Curso:</label>
+                <input type="text" id="curso" name="curso">
+            </div>
+            <div>
+                <label for="numero">Número:</label>
+                <input type="number" id="numero" name="numero">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="nombre-apellido">Nombre y Apellido:</label>
+            <input type="text" id="nombre-apellido" name="nombre-apellido">
+        </div>
+
+        <div class="form-group">
+            <label for="tareas">Cumple con las tareas:</label>
+            <select id="tareas" name="tareas">
+                <option value="si">Sí</option>
+                <option value="no">No</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="asistencia">Falta mucho a las clases:</label>
+            <select id="asistencia" name="asistencia">
+                <option value="si">Sí</option>
+                <option value="no">No</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="instrucciones">Acata instrucciones del docente:</label>
+            <select id="instrucciones" name="instrucciones">
+                <option value="si">Sí</option>
+                <option value="no">No</option>
+                <option value="a-veces">A veces</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="situacion">Situación observada:</label>
+            <textarea id="situacion" name="situacion" rows="4"></textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="reaccion">Reacción del estudiante:</label>
+            <textarea id="reaccion" name="reaccion" rows="4"></textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="recomendaciones">Recomendaciones futuras:</label>
+            <textarea id="recomendaciones" name="recomendaciones" rows="3"></textarea>
+        </div>
+
+        <div class="form-group inline">
+            <div>
+                <label for="lugar">Lugar:</label>
+                <input type="text" id="lugar" name="lugar">
+            </div>
+            <div>
+                <label for="hora">Hora:</label>
+                <input type="time" id="hora" name="hora">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="descripcion-hecho">Descripción del hecho o incidente:</label>
+            <textarea id="descripcion-hecho" name="descripcion-hecho" rows="4"></textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="observaciones">Observaciones:</label>
+            <textarea id="observaciones" name="observaciones" rows="3"></textarea>
+        </div>
+
+        <button type="button" onclick="exportarPDF()">Exportar a PDF</button>
+        <button type="button" class="new-record-btn" onclick="nuevoRegistro()">Nuevo Registro</button>
+    </div>
+
+    <!-- Script jsPDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script>
+        function exportarPDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+
+            // Extraer los valores del formulario
+            const nombreCentro = document.getElementById("nombre-centro").value;
+            const docente = document.getElementById("docente").value;
+            const asignatura = document.getElementById("asignatura").value;
+            const fecha = document.getElementById("fecha").value;
+            const curso = document.getElementById("curso").value;
+            const numero = document.getElementById("numero").value;
+            const nombreApellido = document.getElementById("nombre-apellido").value;
+            const tareas = document.getElementById("tareas").value;
+            const asistencia = document.getElementById("asistencia").value;
+            const instrucciones = document.getElementById("instrucciones").value;
+            const situacion = document.getElementById("situacion").value;
+            const reaccion = document.getElementById("reaccion").value;
+            const recomendaciones = document.getElementById("recomendaciones").value;
+            const lugar = document.getElementById("lugar").value;
+            const hora = document.getElementById("hora").value;
+            const descripcionHecho = document.getElementById("descripcion-hecho").value;
+            const observaciones = document.getElementById("observaciones").value;
+
+            // Título del documento
+            doc.setFontSize(18);
+            doc.text(nombreCentro, 105, 20, { align: 'center' });
+
+            doc.setFontSize(12);
+            doc.text(`Docente: ${docente}`, 10, 30);
+            doc.text(`Asignatura: ${asignatura}`, 10, 40);
+            doc.text(`Fecha: ${fecha}`, 10, 50);
+            doc.text(`Curso: ${curso}`, 10, 60);
+            doc.text(`Número: ${numero}`, 10, 70);
+            doc.text(`Nombre y Apellido: ${nombreApellido}`, 10, 80);
+            doc.text(`Cumple con las tareas: ${tareas}`, 10, 90);
+            doc.text(`Falta mucho a las clases: ${asistencia}`, 10, 100);
+            doc.text(`Acata instrucciones del docente: ${instrucciones}`, 10, 110);
+
+            // Situación observada y más
+            doc.text("Situación observada:", 10, 120);
+            doc.text(situacion, 10, 130);
+            doc.text("Reacción del estudiante:", 10, 150);
+            doc.text(reaccion, 10, 160);
+            doc.text("Recomendaciones futuras:", 10, 180);
+            doc.text(recomendaciones, 10, 190);
+            doc.text(`Lugar: ${lugar}`, 10, 200);
+            doc.text(`Hora: ${hora}`, 10, 210);
+            doc.text("Descripción del hecho o incidente:", 10, 220);
+            doc.text(descripcionHecho, 10, 230);
+            doc.text("Observaciones:", 10, 250);
+            doc.text(observaciones, 10, 260);
+
+            // Guardar el PDF
+            doc.save("registro_anecdotico.pdf");
+        }
+
+        function nuevoRegistro() {
+            document.querySelectorAll('input, textarea').forEach(element => {
+                element.value = '';
+            });
+        }
+    </script>
+
+</body>
+</html>
